@@ -13,6 +13,7 @@ namespace NewHorizons.External.Modules
         public float ArgumentOfPeriapsis { get; set; }
         public float TrueAnomaly { get; set; }
         public float AxialTilt { get; set; }
+        public float LongitudeOfAxialTilt { get; set; }
         public float SiderealPeriod { get; set; }
         public bool IsTidallyLocked { get; set; }
         public MVector3 AlignmentAxis { get; set; }

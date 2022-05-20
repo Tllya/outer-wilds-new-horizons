@@ -18,11 +18,6 @@ namespace NewHorizons.Builder.Orbital
             // This bit makes the initial motion not try to calculate the orbit velocity itself for reasons
             initialMotion._orbitImpulseScalar = 0f;
 
-            // Rotation
-            initialMotion._initAngularSpeed = orbit.SiderealPeriod == 0 ? 0f : 2f * Mathf.PI / (orbit.SiderealPeriod * 60f);
-            var rotationAxis = Quaternion.AngleAxis(orbit.AxialTilt, Vector3.right) * Vector3.up;
-            secondaryBody.transform.rotation = Quaternion.FromToRotation(Vector3.up, rotationAxis);
-
             if (!orbit.IsStatic && primaryBody != null)
             {
                 SetInitialMotion(initialMotion, primaryBody, secondaryBody);
@@ -32,6 +27,18 @@ namespace NewHorizons.Builder.Orbital
                 initialMotion._initLinearDirection = Vector3.forward;
                 initialMotion._initLinearSpeed = 0f;
             }
+
+            initialMotion._initAngularSpeed = orbit.SiderealPeriod == 0 ? 0f : 2f * Mathf.PI / (orbit.SiderealPeriod * 60f);
+
+            var orbitalNormal = Vector3.up;
+            if (!orbit.IsStatic)
+            {
+                orbitalNormal = OrbitalParameters.Rotate(Vector3.up, orbit.LongitudeOfAscendingNode, orbit.Inclination, 0);
+            }
+            var axisOfRotation = Quaternion.AngleAxis(orbit.AxialTilt, Quaternion.AngleAxis(orbit.LongitudeOfAxialTilt, Vector3.up) * Vector3.left) * orbitalNormal;
+
+            // Rotation
+            secondaryBody.transform.rotation = Quaternion.FromToRotation(Vector3.up, axisOfRotation);
 
             return initialMotion;
         }

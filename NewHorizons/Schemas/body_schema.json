@@ -411,6 +411,10 @@
           "$ref": "#/$defs/angle",
           "description": "The angle between the normal to the orbital plane and its axis of rotation."
         },
+        "longitudeOfAxialTilt": {
+          "$ref": "#/$defs/angle",
+          "description": "The orientation of the axis around which the axialTilt angle is applied."
+        },
         "siderealPeriod": {
           "type": "number",
           "default": 0,
